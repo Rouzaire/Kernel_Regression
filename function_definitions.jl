@@ -140,7 +140,7 @@ end
     return A_jitter
 end
 ## Optimisation Algorithms
-@everywhere function GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS,epochs=Int(1E6),η=0.01)
+@everywhere function GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS,epochs=Int(1E4),η=0.01)
     epochs_saved = ceil.(10 .^(range(1,stop=log10(epochs),length=10)))
     Ptrain = length(Xtrain) ; Ptest = length(Xtest)
     GramS = ConstructGramMatrices(Xtrain,νT,νS,"Student") # Construct Student Gram Matrix (Covariance Matrix for each couple of points in training set)
@@ -158,7 +158,7 @@ end
         a = a - η*grad_err
     end
 
-    return test_err, test_err_exact
+    return test_err, test_err_exact , epochs
 end
 @everywhere function ConjugateGradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS,tolerance=1E-5)
     Ptrain = length(Xtrain) ; Ptest = length(Xtest)
@@ -236,7 +236,7 @@ end
     ## 3D Matrices to store data // dim 1 : epochs //  dim 2 : P //  dim 3 : Teacher
         test_err_matrix  = NaN*zeros(11,length(PP),maximum(nb_teacher))
         exact_err_matrix = NaN*zeros(1 ,length(PP),maximum(nb_teacher))
-        if algo == "CGD" epochs_matrix = NaN*zeros(1,length(PP),maximum(nb_teacher)) end # number of epochs CGD needed to converge
+        epochs_matrix    = NaN*zeros(1,length(PP),maximum(nb_teacher))# number of epochs CGD needed to converge
 
     for i in eachindex(PP) # scan over P
         Ptrain = PP[i]
@@ -249,7 +249,7 @@ end
 
             ## Launch the simulations :
             println("$algo : ν = $νT, P = $(PP[i]), Teacher $j/$(nb_teacher[i]), Time : "*string(Dates.hour(now()))*"h"*string(Dates.minute(now())))
-            if     algo == "GD"  test_err_matrix[:,i,j],exact_err_matrix[1,i,j] = GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS)
+            if     algo == "GD"  test_err_matrix[:,i,j],exact_err_matrix[1,i,j],epochs_matrix[1,i,j] = GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS)
             elseif algo == "CGD" test_err_matrix[:,i,j],exact_err_matrix[1,i,j],epochs_matrix[1,i,j] = ConjugateGradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS)
             end
         end # end for loop over Teachers
@@ -259,8 +259,5 @@ end
     ## Save Data for later analysis
     # extension = " "*string(Dates.hour(now()))*"h"*string(Dates.minute(now()))*"mn"
     extension = " "*string(Dates.day(now()))
-
-    if     algo == "GD"  save("Data\\data__nu=$νT"*extension*".jld", "test_err", test_err_matrix, "exact_err", exact_err_matrix)
-    elseif algo == "CGD" save("Data\\data__nu=$νT"*extension*".jld", "test_err", test_err_matrix, "exact_err", exact_err_matrix, "epochs", epochs_matrix)
-    end
+    save("Data\\data__nu=$νT"*extension*".jld", "test_err", test_err_matrix, "exact_err", exact_err_matrix, "epochs", epochs_matrix)
 end ## end function

@@ -1,5 +1,6 @@
 using Plots, JLD, Statistics, Distributed
 pyplot()
+cd("D:\\Documents\\Ecole\\EPFL\\Internship_2019_ML\\Kernel Regression Teacher Student")
 include("function_definitions.jl")
 
 NaNmean(x) = mean(filter(!isnan,x)) ; NaNmean(x,dimension) = mapslices(NaNmean,x,dims=dimension) ; NaNstd(x) = std(filter(!isnan,x)) ; NaNstd(x,dimension) = mapslices(NaNstd,x,dims=dimension)
@@ -16,7 +17,7 @@ teacher_high = teachers_matrix[end][1] ; teacher_low = teachers_matrix[1][1]
 test_err_matrix  = NaN*zeros(11,length(PP),teacher_high,length(ν))
 exact_err_matrix = NaN*zeros(1 ,length(PP),teacher_high,length(ν))
 if algo     == "CGD" epochs_matrix = NaN*zeros(1 ,length(PP),teacher_high,length(ν))
-elseif algo == "GD"  epochs_matrix = 500*ones(1 ,length(PP),teacher_high,length(ν))
+elseif algo == "GD"  epochs_matrix = 1E6*ones(1 ,length(PP),teacher_high,length(ν))
 end
 
 for i in eachindex(ν)
@@ -40,7 +41,7 @@ exact_err_matrix_std_teachers = NaNstd(exact_err_matrix, dimm)
 epochs_matrix_avg_teachers    = NaNmean(epochs_matrix,   dimm)
 epochs_matrix_std_teachers    = NaNstd(epochs_matrix,    dimm)
 
-β = 2/dimension*min.(ν,dimension + 2νS)
+β = 2 ./dimension .*min.(ν,dimension .+ 2νS)
 factor = 0.25
 ## Test Error vs P for several epochs
 for j in 1:length(ν)
@@ -74,7 +75,7 @@ for j in 1:5
     xlabel!("Epochs")
     ylabel!("Test Error averaged over $teacher_high Teachers")
     titre(νT,νS)
-    savefig("Figures\\Final Results, GD d=1\\testerror_vs_epochs_nuT$νT _nuS$νS.pdf")
+    savefig("Figures\\Final Results, GD d=1\\0testerror_vs_epochs_nuT$νT _nuS$νS.pdf")
 end
 
 

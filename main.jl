@@ -1,4 +1,4 @@
-PP = [30,50,100,200,300,500] ; Ptest = 500 ; νT = [0.5 1.0 2.0 4.0 8.0] ; νS = 1/2 ; nb_teacher_low = 15 ; nb_teacher_high = 100
+PP = [30,50,100,200,300,500] ; Ptest = 500 ; νT = [0.5 1.0 1.5 2.0 4.0 8.0] ; νS = 1/2 ; nb_teacher_low = 15 ; nb_teacher_high = 50
 dimension = 1 ; algo = "GD"
 teachers_matrix = []
 for i in 1:length(νT)
