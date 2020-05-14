@@ -1,5 +1,6 @@
-PP = [30,50,100,200,300,500] ; Ptest = 500 ; νT = [0.5 1.0 1.5 2.0 4.0 8.0] ; νS = 1/2 ; nb_teacher_low = 15 ; nb_teacher_high = 50
-dimension = 1 ; algo = "GD"
+cd("D:\\Documents\\Ecole\\EPFL\\Internship_2019_ML\\Kernel Regression Teacher Student")
+PP = [100,200,300,500] ; Ptest = 500 ; νT = [0.5 0.75 1.0 1.5 2 4 20] ; νS = 1/2 ; nb_teacher_low = 10 ; nb_teacher_high = 25
+dimension = 2 ; algo = "GD"
 teachers_matrix = []
 for i in 1:length(νT)
     if νT[i] ≤ 1 append!(teachers_matrix,[Int.(floor.(10 .^(range(log10(nb_teacher_low) ,stop=0,length=length(PP)))))])

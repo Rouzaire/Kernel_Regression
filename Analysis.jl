@@ -6,18 +6,18 @@ include("function_definitions.jl")
 NaNmean(x) = mean(filter(!isnan,x)) ; NaNmean(x,dimension) = mapslices(NaNmean,x,dims=dimension) ; NaNstd(x) = std(filter(!isnan,x)) ; NaNstd(x,dimension) = mapslices(NaNstd,x,dims=dimension)
 ### Load Variables
 
-dayy = "2" ; param = load("Data\\parameters_day"*dayy*".jld")
+dayy = "14" ; param = load("Data\\parameters_day"*dayy*".jld")
 PP   = param["PP"] ; Ptest = param["Ptest"] ; ν = param["νT"] ; νS = param["νS"]
 dimension = param["dimension"] ; algo = param["algo"]
 teachers_matrix = param["teachers_matrix"]
-epochs_saved = [1, 2, 3, 4, 6, 10, 16, 25, 40, 63, 100] # % of learning
+epochs_saved = ceil.(10 .^(range(1,stop=log10(1E3),length=100)))
 
 # 4D Matrices to store data // dim 1 : epochs //  dim 2 : P //  dim 3 : Teacher // dim 4 : ν
 teacher_high = teachers_matrix[end][1] ; teacher_low = teachers_matrix[1][1]
-test_err_matrix  = NaN*zeros(11,length(PP),teacher_high,length(ν))
+test_err_matrix  = NaN*zeros(97,length(PP),teacher_high,length(ν))
 exact_err_matrix = NaN*zeros(1 ,length(PP),teacher_high,length(ν))
 if algo     == "CGD" epochs_matrix = NaN*zeros(1 ,length(PP),teacher_high,length(ν))
-elseif algo == "GD"  epochs_matrix = 1E6*ones(1 ,length(PP),teacher_high,length(ν))
+elseif algo == "GD"  epochs_matrix = 1E3*ones(1 ,length(PP),teacher_high,length(ν))
 end
 
 for i in eachindex(ν)
@@ -61,21 +61,22 @@ end
 xs = [[1,1000],[1,1000],[2,100],[2,20],[2,15]]
 coeff = [0.8,0.5,1,5,10]
 s = Float64.([1 2 4 6 8])
-for j in 1:5
+for j in 1:length(ν)
     νT = ν[j]
     plot(box=true,legend=:topright)
     for i in 1:length(PP)
-        if isnan(round(epochs_matrix_std_teachers[1,i,1,j])) || round(epochs_matrix_std_teachers[1,i,1,j]) .== 0 str_std = "" else str_std =  " ± $(Int(round(epochs_matrix_std_teachers[1,i,1,j])))" end
-        lab = "P = $(Int(PP[i])) , ⟨#epochs⟩ ≈ $(Int(round(epochs_matrix_avg_teachers[1,i,1,j])))"*str_std
-        xx = Int.(round.(10 .^(range(0,stop=log10(epochs_matrix_avg_teachers[1,i,1,j]),length=11))))
-        display(plot!(xx,test_err_matrix_avg_teachers[1:end,i,1,j],ribbon=factor*test_err_matrix_std_teachers[1:end,i,1,j],fillalpha=.5,xaxis=:log,yaxis=:log,marker=:o,color=i,label=lab))
-        scatter!([xx[end],NaN],[exact_err_matrix[1,i,1,j],NaN],markershape=:utriangle,color=i, markersize=10,label=nothing)
+        # if isnan(round(epochs_matrix_std_teachers[1,i,1,j])) || round(epochs_matrix_std_teachers[1,i,1,j]) .== 0 str_std = "" else str_std =  " ± $(Int(round(epochs_matrix_std_teachers[1,i,1,j])))" end
+        # lab = "P = $(Int(PP[i])) , ⟨#epochs⟩ ≈ $(Int(round(epochs_matrix_avg_teachers[1,i,1,j])))"*str_std
+        lab = "P = $(Int(PP[i])) , ⟨#epochs⟩ ≈ $(Int(round(epochs_matrix_avg_teachers[1,i,1,j])))"
+        # xx = Int.(round.(10 .^(range(0,stop=log10(epochs_matrix_avg_teachers[1,i,1,j]),length=11))))
+        display(plot!(epochs_saved,test_err_matrix_avg_teachers[1:end,i,1,j],ribbon=factor*test_err_matrix_std_teachers[1:end,i,1,j],fillalpha=.5,xaxis=:log,yaxis=:log,marker=:o,color=i,label=lab))
+        scatter!([epochs_saved[end],NaN],[exact_err_matrix[1,i,1,j],NaN],markershape=:utriangle,color=i, markersize=10,label=nothing)
     end
     # plot!(xs[j],coeff[j]*xs[j].^(-s[j]),color=:black,label="Slope $(Int(s[j]))")
     xlabel!("Epochs")
     ylabel!("Test Error averaged over $teacher_high Teachers")
     titre(νT,νS)
-    savefig("Figures\\Final Results, GD d=1\\0testerror_vs_epochs_nuT$νT _nuS$νS.pdf")
+    savefig("Figures\\Final Results, GD d=2\\0testerror_vs_epochs_nuT$νT _nuS$νS.pdf")
 end
 
 

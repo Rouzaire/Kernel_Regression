@@ -140,7 +140,7 @@ end
     return A_jitter
 end
 ## Optimisation Algorithms
-@everywhere function GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS,epochs=Int(1E4),η=0.01)
+@everywhere function GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS,epochs=Int(1E3),η=0.01)
     epochs_saved = ceil.(10 .^(range(1,stop=log10(epochs),length=100)))
     Ptrain = length(Xtrain) ; Ptest = length(Xtest)
     GramS = ConstructGramMatrices(Xtrain,νT,νS,"Student") # Construct Student Gram Matrix (Covariance Matrix for each couple of points in training set)
@@ -234,7 +234,7 @@ end
     @assert algo in ["GD","CGD"] println(" '$algo' Minimization Algorithm Unknown. Choose among 'GD' or 'CGD'.")
 
     ## 3D Matrices to store data // dim 1 : epochs //  dim 2 : P //  dim 3 : Teacher
-        test_err_matrix  = NaN*zeros(101,length(PP),maximum(nb_teacher))
+        test_err_matrix  = NaN*zeros(97,length(PP),maximum(nb_teacher))
         exact_err_matrix = NaN*zeros(1 ,length(PP),maximum(nb_teacher))
         epochs_matrix    = NaN*zeros(1,length(PP),maximum(nb_teacher))# number of epochs CGD needed to converge
 
