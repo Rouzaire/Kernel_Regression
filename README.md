@@ -31,4 +31,5 @@ A few remarks :
 * The code is designed to collect statistics by running independent realisations to emulate the expectation over the Teacher random process. A brute-force approach would be to run all simulations the same number of times but it would take way too long. Therefore, since at large \nu and at large P (independently), the standard deviation of the results goes to zeros, one concentrates the efforts (= more realisations) for small \nu and small P
 * The leading term in runtime complexity is O(#number_epochs * P * max(P,Ptest))
 
-<math> $t^2 * log(x)$ </math>
+
+<math> t^2 * log(x) </math>
