@@ -32,4 +32,4 @@ A few remarks :
 * The leading term in runtime complexity is O(#number_epochs * P * max(P,Ptest))
 
 
-<math> t^2 * log(x) </math>
+<!-- <math> t^2 * log(x) </math> -->
