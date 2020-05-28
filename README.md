@@ -21,11 +21,14 @@ Optimization routines :
 The prediction of the student is computed within the `predict` method : the prediction at a given point X is a simple weighted average of similarities between X and all the training points. The weights are initially zeros but they are optimized during the training.
 
 Three optimization Algorithms are implemented : `GradientDescent` (GD), `ConjugateGradientDescent` (CGD) and `ConjugateGradientDescentFixedEpochs`
-* GD : the easiest to implement, easy to work out analytically but very slow numerically. Fixed learning rate, rescaled by the number of training points $P$.
+* GD : the easiest to implement, easy to work out analytically but very slow numerically. Fixed learning rate \eta, rescaled by the number of training points $P$.
 * CGD : more complicated to work out analytically but very efficient numerically. Converges in approximately $P$ epochs. It comes in two versions :
     * The default version, where the algorithm stops when the train loss reaches a given threshold.
     * The benchmark version, where the algorithm runs for a fixed number of epochs passed in argument. Also useful when one is interested in the beginning of the dynamics.
 
 A few remarks :
-* I recommend no preconditioning since it modifies greatly the results, leading to false conclusions.
+* I recommend *no preconditioning* since it modifies greatly the results, leading to false conclusions.
 * The code is designed to collect statistics by running independent realisations to emulate the expectation over the Teacher random process. A brute-force approach would be to run all simulations the same number of times but it would take way too long. Therefore, since at large \nu and at large P (independently), the standard deviation of the results goes to zeros, one concentrates the efforts (= more realisations) for small \nu and small P
+* The leading term in runtime complexity is O(#number_epochs * P * max(P,Ptest))
+
+<math> t^2 * log(x) </maths>
