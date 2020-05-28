@@ -8,7 +8,10 @@ We investigate the dynamics of the test error during the optimization routine ex
 ??? <quote>
 
 In this project, the Teacher kernel is chosen among the Matérn kernels family :
-C_\nu(d) = \sigma^2\frac{2^{1-\nu}}{\Gamma(\nu)}\Bigg(\sqrt{2\nu}\frac{d}{\rho}\Bigg)^\nu K_\nu\Bigg(\sqrt{2\nu}\frac{d}{\rho}\Bigg),
+\begin{equation}
+C_\nu(d) = \sigma^2\frac{2^{1-\nu}}{\Gamma(\nu)}\Bigg(\sqrt{2\nu}\frac{d}{\rho}\Bigg)^\nu K_\nu\Bigg(\sqrt{2\nu}\frac{d}{\rho}\Bigg)
+\end{equation}
+
 where $\Gamma$ is the [[gamma function]], $K_\nu$ is the modified [[Bessel function]] of the second kind, ''\rho=1''is the characteristic length scale and ''\nu'' is the non-negative smoothness parameter of the covariance (the larger the smoother, \nu = \infinity <=> Gaussian kernel)
 
 and the Student kernel is the Laplace kernel <=> Matérn[\nu = 1/2 ; \rho = 1] : K_S(x,x') = exp(-||x - x'||)
