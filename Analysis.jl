@@ -116,3 +116,10 @@ xlabel!("P")
 ylabel!("⟨#epochs⟩")
 title!("Fixed tolerance = 1E-5")
 savefig("Figures\\trend_epochs_vs_P.pdf")
+
+## Slope of dynamics (Student = Laplace)
+nus = [0.5,0.75,1,1.5,2,20]
+sloped1 = [0.25,0.28,0.3,0.5,0.66,1] # d = 1
+sloped2 = [0.22,0.25,0.25,0.375,0.375,0.5] # d = 2
+plot(nus,sloped1,marker=:o)
+plot!(nus,sloped2,marker=:o)
