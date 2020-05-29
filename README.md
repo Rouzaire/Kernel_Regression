@@ -34,3 +34,8 @@ A few remarks :
 * I recommend *no preconditioning* (other than `EnforcePDness`) since it modifies greatly the results, leading to false conclusions.
 * Surprisingly, adding momentum to GD did not accelerate convergence so it is not implemented in the current version.
 * The code is designed to collect statistics by running independent realisations to emulate the expectation over the Teacher random process. A brute-force approach would be to run all simulations the same number of times but it would take way too long. Therefore, since at small ν and at large P (independently), the standard deviation of the results goes to zeros, one concentrates the efforts (= more realisations) for large ν and small P
+
+**Bibliography**
+* Spigler, Geiger and Wyart : Learning Curves of Kernel Methods, empirical data vs. Teacher/Student paradigm.
+* Jacot, Gabriel and Hongler : Neural Tangent Kernel Convergence and Generalization in Neural Networks
+* Bordelon, Canatar and Pehlevan : Spectrum dependent learning curves in kernel regression and wide neural networks
