@@ -19,7 +19,7 @@ The project is small enough for the code to be organized as follows :
 
 We investigate the dynamics of the test error during the optimization routine explained hereafter, guided by the knowledge of the behavior of the exact test error (≈ test error at infinite time of optimization) developed in *Learning Curves of Kernel Methods, empirical data vs. Teacher/Student paradigm* by Spigler, Geiger and Wyart.
 
-Optimization routines :
+**Optimization routines :**
 
 The prediction of the student is computed within the `predict` method : the prediction at a given point X is a simple weighted average of similarities between X and all the training points. The weights are initially zeros but they are optimized during the training.
 
