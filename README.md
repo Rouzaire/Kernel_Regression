@@ -8,9 +8,9 @@ The project is small enough for the code to be organized as follows :
 
 **Goal of the project** : investigate the dynamics of learning of a Kernel Regression in a Teacher/Student framework
 
-* The Teacher/Student framework for supervised Regression is explained in details in the report.pdf file.
+* The Teacher/Student framework for supervised Regression is explained in details in the [`report`](#report.pdf)file.
 
-* The kernels we use for Teachers are from the Matérn family : https://en.wikipedia.org/wiki/Mat%C3%A9rn_covariance_function. The Student kernel is kept fixed to Matérn[ν = 1/2]  (aka Laplace kernel or exponential kernel). These kernels are isotropic and translation invariant. They are coded in the function `k(h)` .
+* The kernels we use for Teachers are from the Matérn family : *[Read more](https://en.wikipedia.org/wiki/Mat%C3%A9rn_covariance_function)*. The Student kernel is kept fixed to Matérn[ν = 1/2]  (aka Laplace kernel or exponential kernel). These kernels are isotropic and translation invariant. They are coded in the function `k(h)` .
 
 * The data is generated uniformly on the unit hypersphere of dimension d (for clarity : d=1 means the unit circle and d=2 means the usual sphere embedded in the natural 3 dimensions) by normalizing (to 1) points from a multivariate random normal distribution in d+1 dimensions. From this data one can then extract the training sets and testing sets. Therefore, to constructs theses sets, one has to call successively `generate_X(...)` ,  `generate_Z(...)` , `extract_TestSet(...)` , `extract_TrainSet(...)` .
 
