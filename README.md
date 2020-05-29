@@ -4,14 +4,14 @@ Ylann Rouzaire, all rights reserved.
 
 ## Goal of the project
 
-Investigate the dynamics of learning of a Kernel Regression in a Teacher/Student framework
+Investigate the dynamics of learning in a Teacher/Student Kernel Regression framework
 
 ## Structure of the code
 
 The project is small enough for the code to be organized as follows :
 * All the functions are defined in `function_definitions.jl`
 * The `main.jl` defines the keys arguments, among them the number of statistics to collect and distributes the work on different processors thanks to the function `Run`.
-* The data is saved in JLD files byt the `Run` function so that the analysis can be performed later by the `analysis.jl` file.
+* The data is saved in JLD files by the `Run` function so that the analysis can be performed later by the `analysis.jl` file.
 * The `benchmark.jl` is a test file and therefore may contain deprecated syntax.
 
 ## Some remarks
