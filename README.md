@@ -1,4 +1,6 @@
-Ylann Rouzaire, all rights reserved
+Ylann Rouzaire, all rights reserved.
+
+# Kernel Regression Dynamics
 
 **Structure of the code**
 
