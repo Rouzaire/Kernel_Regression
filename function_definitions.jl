@@ -1,7 +1,7 @@
 ## Some basic functions
-@everywhere dist(x,y) = norm(x-y) # euclidien distance
+@everywhere dist(x::Array{Float64,1},y::Array{Float64,1}) = norm(x-y) # euclidien distance
 @everywhere MSE(a,Z,gram_matrix) = norm(gram_matrix*a - Z)^2/length(a) # Loss  function (MSE between current approximation of minimum and actual function)
-@everywhere dMSE(a,Z,gram_matrix) = 2/length(a)*gram_matrix*(gram_matrix*a - Z) # derivative of the loss function wrt a (the current guess)
+@everywhere dMSE(a::Array{Float64,1},Z::Array{Float64,1},gram_matrix::Array{Float64,2}) = 2/length(a)*gram_matrix*(gram_matrix*a - Z) # derivative of the loss function wrt a (the current guess)
 
 ## Costumized Title
 @everywhere function titre(νT,νS)
@@ -18,7 +18,7 @@
     end
 end
 ## Matérn Covariance functions
-@everywhere function k(h,ν,σ=1,ρ=1) # Teacher kernel
+@everywhere function k(h::Float64,ν::Float64,σ::Float64=1.0,ρ::Float64=1.0) # Teacher kernel
     ## h is the euclidian distance in real space R² (actual subspace = unit circle)
     ## ν (nu) the smoothness of the Matérn covariance function (here ν ∈ [0.5,8])
     ## ρ is the length scale
@@ -32,7 +32,7 @@ end
 
 
 ## Prediction functions
-@everywhere function analytic_prediction(Xtrain,Ztrain,Xtest,Gram,νS,method="Inverse") # "à la Kriging", returns a vector
+@everywhere function analytic_prediction(Xtrain::Array{Array{Float64,1}},Ztrain::Array{Float64,1},Xtest::Array{Array{Float64,1}},Gram::Array{Float64,2},νS::Float64,method="Inverse") # "à la Kriging", returns a vector
     # x0 is the point where one want to predict
     prediction = zeros(length(Xtest))
     if method == "Cholesky"
@@ -53,7 +53,7 @@ end
     end
 end
 
-@everywhere function predict(Xtest,Xtrain,a,νS)
+@everywhere function predict(Xtest::Array{Array{Float64,1}},Xtrain::Array{Array{Float64,1}},a::Array{Float64,1},νS::Float64)
     prediction = zeros(length(Xtest))
     for i in eachindex(Xtest)
         V = [k(dist(Xtest[i],element),νS) for element in Xtrain]
@@ -89,7 +89,7 @@ end
 end
 
 ## Construction of Gram Matrices (Covariance Matrices for each couple of points)
-@everywhere function ConstructGramMatrices(X,νT,νS,string="Both")
+@everywhere function ConstructGramMatrices(X::Array{Array{Float64,1}},νT::Float64,νS::Float64,string="Both")
     P = length(X)
     if string == "Teacher"
         KT = ones(P,P)
@@ -140,7 +140,7 @@ end
     return A_jitter
 end
 ## Optimisation Algorithms
-@everywhere function GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS,epochs=Int(1E3),η=0.01)
+@everywhere function GradientDescent(Xtrain,Ztrain,Xtest,Ztest,νT,νS,epochs=Int(1E5),η=0.01)
     epochs_saved = ceil.(10 .^(range(1,stop=log10(epochs),length=100)))
     Ptrain = length(Xtrain) ; Ptest = length(Xtest)
     GramS = ConstructGramMatrices(Xtrain,νT,νS,"Student") # Construct Student Gram Matrix (Covariance Matrix for each couple of points in training set)
@@ -234,7 +234,7 @@ end
     @assert algo in ["GD","CGD"] println(" '$algo' Minimization Algorithm Unknown. Choose among 'GD' or 'CGD'.")
 
     ## 3D Matrices to store data // dim 1 : epochs //  dim 2 : P //  dim 3 : Teacher
-        test_err_matrix  = NaN*zeros(97,length(PP),maximum(nb_teacher))
+        test_err_matrix  = NaN*zeros(101,length(PP),maximum(nb_teacher))
         exact_err_matrix = NaN*zeros(1 ,length(PP),maximum(nb_teacher))
         epochs_matrix    = NaN*zeros(1,length(PP),maximum(nb_teacher))# number of epochs CGD needed to converge
 
