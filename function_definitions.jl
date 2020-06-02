@@ -134,7 +134,7 @@ end
     # For small jitter values (τ²), the properties of the rectified matrix do not change significantly
     # For consistency, we employ jitter even when unnecessary so that all simulations are done the same way
 
-    τ2 = 1e-13 # small enough not to be seen and to work for all tested cases
+    τ2 = 1e-12 # small enough not to be seen and to work for all tested cases
     A_jitter = A + τ2*I(size(A)[1])
     @assert isposdef(A_jitter) ## if does not work, increase τ2 by a factor 10, and try again !
     return A_jitter
