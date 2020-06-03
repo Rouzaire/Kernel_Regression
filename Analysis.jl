@@ -6,7 +6,7 @@ include("function_definitions.jl")
 NaNmean(x) = mean(filter(!isnan,x)) ; NaNmean(x,dimension) = mapslices(NaNmean,x,dims=dimension) ; NaNstd(x) = std(filter(!isnan,x)) ; NaNstd(x,dimension) = mapslices(NaNstd,x,dims=dimension)
 ### Load Variables
 
-dayy = "29" ; param = load("Data\\parameters_day"*dayy*".jld")
+dayy = "2" ; param = load("Data\\parameters_day"*dayy*".jld")
 PP   = param["PP"] ; Ptest = param["Ptest"] ; ν = param["νT"] ; νS = param["νS"]
 dimension = param["dimension"] ; algo = param["algo"]
 teachers_matrix = param["teachers_matrix"]
@@ -60,6 +60,7 @@ end
 ## Test Error vs epochs for several P
 coeff = 0.75*[1,1,1,3,3,24,8] ; s = [0.2 0.3 0.4 0.65 0.8 1.25 1.35]; factor = 0.5
 # coeff = [0.8,0.85,1.1,1.7,1.3,8,10] ; s = [0.13 0.2 0.28 0.4 0.45 0.73 0.85 ] ; factor = 1/2
+coeff = [0.7,0.7,0.7,0.7,0.7,0.7,0.7] ; s = [0.2 0.3 0.4 0.65 0.8 1.25 1.35]/10; factor = 0.5
 plot(box=true,legend=:bottomleft)
 for j in 1:length(ν)
     νT = ν[j]
@@ -74,16 +75,16 @@ for j in 1:length(ν)
             display(plot!([1E3,1E5],coeff[j]*[1E3,1E5].^-s[j],color=j,line=:dash,label="Slope $(s[j])"))
         else
             display(plot!([5E2,1E4],coeff[j]*[5E2,1E4].^-s[j],color=j,line=:dash,label="Slope $(s[j])"))
-            # scatter!([epochs_saved[end],NaN],[exact_err_matrix[1,i,1,j],NaN],markershape=:utriangle,color=j, markersize=10,label=nothing)
         end
+        # scatter!([epochs_saved[end],NaN],[exact_err_matrix[1,i,1,j],NaN],markershape=:utriangle,color=j, markersize=10,label="")
     end
     # plot!(xs[j],coeff[j]*xs[j].^(-s[j]),color=:black,label="Slope $(Int(s[j]))")
 end
     xlabel!("Epochs")
     ylabel!("Test Error averaged over $teacher_high Teachers")
-    title!("Teacher Matérn[ν] , Student Laplace , d=1")
-    savefig("Figures\\Final Results, GD d=1\\dynamics_powerlawd1")
-    savefig("Figures\\Final Results, GD d=1\\dynamics_powerlawd1.pdf")
+    title!("Teacher Matérn[ν] , Student Laplace , d=10")
+    savefig("Figures\\Final Results, GD d=10\\dynamics_powerlawd10")
+    # savefig("Figures\\Final Results, GD d=10\\dynamics_powerlawd1.pdf")
 
 
 ##
